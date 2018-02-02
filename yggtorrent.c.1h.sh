@@ -161,5 +161,4 @@ echo "---"
 echo "Mon Ratio     : $mon_ratio | ansi=true font=monospace trim=false"
 echo "Mon Upload    : $mon_upload | ansi=true font=monospace trim=false"
 echo "Mon Download  : $mon_download | ansi=true font=monospace trim=false"
-echo 
 echo "Mon Crédit    : $mon_credit_clair | ansi=true font=monospace trim=false"
