@@ -13,7 +13,7 @@ script_pastebin="https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/mas
 local_version=$version
 pastebin_version=`wget -O- -q "$script_pastebin" | grep "^version=" | sed '/grep/d' | sed 's/.*version="//' | sed 's/".*//'`
 
-#### Comparing versions and updating if required
+#### Comparaison des version et mise à jour si necessaire
 vercomp () {
     if [[ $1 == $2 ]]
     then
@@ -94,11 +94,22 @@ zenity --progress \
   --auto-kill
 fi
 
-ygg_login=""
-ygg_password=""
+#### Vérification du cache des icones (ou création)
+icons_cache=`echo $HOME/.config/argos/.cache-icons`
+if [[ ! -f "$icons_cache" ]]; then
+  mkdir -p $icons_cache
+fi
+if [[ ! -f "$icons_cache/settings.png" ]] ; then curl -o "$icons_cache/settings.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/settings.png" ; fi
+
+#### Mise en variable des icones
+SETTINGS_ICON=$(curl -s "file://$icons_cache/settings.png" | base64 -w 0)
+
+#### Récupération des informations de YGG
+ygg_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $1}'`
+ygg_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $2}'`
 website_url="https://yggtorrent.com"
 
-#### Generating cookie
+#### Generation du cookie
 website_login_page=`echo $website_url"/user/login"`
 wget -q --save-cookies $HOME/.config/argos/yggtorrent/cookies.txt --keep-session-cookies --post-data="id=$ygg_login&pass=$ygg_password" "$website_login_page"
 rm -f login 2>/dev/null
@@ -133,7 +144,7 @@ humanise() {
     echo "$b$d ${S[$s]}"
 }
 
-#### Getting my account details
+#### Récupération des détails du compte
 wget -q --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url" -O $HOME/.config/argos/yggtorrent/page.html
 mon_ratio=`cat $HOME/.config/argos/yggtorrent/page.html | grep Ratio | sed 's/.*Ratio \: //' | sed 's/<\/a>.*//'`
 mon_upload=`cat $HOME/.config/argos/yggtorrent/page.html | grep fa-arrow-up | sed 's/.*;">//' | sed 's/<\/span>.*//' | sed 's/ //g'`
@@ -141,19 +152,20 @@ mon_download=`cat $HOME/.config/argos/yggtorrent/page.html | grep fa-arrow-down 
 mon_upload_detail=`dehumanise $mon_upload`
 mon_download_detail=`dehumanise $mon_download`
 mon_credit=$(($mon_upload_detail-$mon_download_detail))
-
-
 mon_credit_clair=`humanise $mon_credit`
  
-#### Get my avatar
+#### Récupération de l'avatar du membre
 wget -q --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url/user/account" -O $HOME/.config/argos/yggtorrent/page_account.html
 avatar_url=`cat $HOME/.config/argos/yggtorrent/page_account.html | grep "/files/avatars/" | grep -oP 'http.?://\S+' | sed 's/"//'`
 IMAGE=$(curl -s "$avatar_url" | base64 -w 0)
+
+#### Préparation des paramètres
+account_infos=`echo -e "zenity --forms --width=500 --window-icon=\"~/.config/argos/.cache-icons/yggtorrent.png\" --title=\"Authentification du compte\" --text=\"Veuillez entrer vos informations\" --add-entry=\"Identifiant YGG\" --add-entry=\"Mot de passe YGG\" --separator=\" \" 2>/dev/null >~/.config/argos/.yggtorrent-account"`
  
-#### Get YGG icon
+#### Récupération du favicon de YGG
 YGG_ICON=$(curl -s "https://yggtorrent.com/static/images/favicon-32x32.png" | base64 -w 0)
 
-#### Let's display the result
+#### On affice le résultat
 echo " $mon_credit_clair | image='$YGG_ICON' imageWidth=32"
 echo "---"
 printf "%19s | ansi=true font='Ubuntu Mono' trim=false size=20 href=$website_url terminal=false image=$IMAGE imageWidth=80 \n" "$ygg_login"
@@ -162,3 +174,5 @@ printf "%-3s \e[1m%-19s :\e[0m %-22s | ansi=true font='Ubuntu Mono' trim=false \
 printf "%-3s \e[1m%-19s :\e[0m %-22s | ansi=true font='Ubuntu Mono' trim=false \n" ":arrow_up:" "Mon Upload" "$mon_upload"
 printf "%-3s \e[1m%-19s :\e[0m %-22s | ansi=true font='Ubuntu Mono' trim=false \n" ":arrow_down:" "Mon Download" "$mon_download"
 printf "%-3s \e[1m%-19s :\e[0m %-22s | ansi=true font='Ubuntu Mono' trim=false \n" ":arrow_right_hook:" "Mon Credit" "$mon_credit_clair"
+echo "---"
+printf "%-2s %s | image='$SETTINGS_ICON' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false bash='$account_infos' terminal=false \n" "" "Paramètres du compte YGG"
