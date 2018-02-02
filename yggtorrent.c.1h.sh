@@ -100,7 +100,7 @@ website_url="https://yggtorrent.com"
 
 #### Generating cookie
 website_login_page=`echo $website_url"/user/login"`
-wget -q --save-cookies cookies.txt --keep-session-cookies --post-data="id=$ygg_login&pass=$ygg_password" "$website_login_page"
+wget -q --save-cookies $HOME/.config/argos/yggtorrent/cookies.txt --keep-session-cookies --post-data="id=$ygg_login&pass=$ygg_password" "$website_login_page"
 rm -f login 2>/dev/null
 
 #### Fonction: dehumanize
@@ -134,20 +134,20 @@ humanise() {
 }
 
 #### Getting my account details
-wget -q --load-cookies=cookies.txt "$website_url" -O page.html
-mon_ratio=`cat page.html | grep Ratio | sed 's/.*Ratio \: //' | sed 's/<\/a>.*//'`
-mon_upload=`cat page.html | grep fa-arrow-up | sed 's/.*;">//' | sed 's/<\/span>.*//' | sed 's/ //g'`
-mon_download=`cat page.html | grep fa-arrow-down | sed 's/.*;">//' | sed 's/<\/span>.*//' | sed 's/ //g'`
-mon_upload_detail=`dehumanize $mon_upload`
-mon_download_detail=`dehumanize $mon_download"`
+wget -q --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url" -O $HOME/.config/argos/yggtorrent/page.html
+mon_ratio=`cat $HOME/.config/argos/yggtorrent/page.html | grep Ratio | sed 's/.*Ratio \: //' | sed 's/<\/a>.*//'`
+mon_upload=`cat $HOME/.config/argos/yggtorrent/page.html | grep fa-arrow-up | sed 's/.*;">//' | sed 's/<\/span>.*//' | sed 's/ //g'`
+mon_download=`cat $HOME/.config/argos/yggtorrent/page.html | grep fa-arrow-down | sed 's/.*;">//' | sed 's/<\/span>.*//' | sed 's/ //g'`
+mon_upload_detail=`dehumanise $mon_upload`
+mon_download_detail=`dehumanise $mon_download`
 mon_credit=$(($mon_upload_detail-$mon_download_detail))
 
 
 mon_credit_clair=`humanise $mon_credit`
  
 #### Get my avatar
-wget -q --load-cookies=cookies.txt "$website_url/user/account" -O page_account.html
-avatar_url=`cat page_account.html | grep "/files/avatars/" | grep -oP 'http.?://\S+' | sed 's/"//'`
+wget -q --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url/user/account" -O $HOME/.config/argos/yggtorrent/page_account.html
+avatar_url=`cat $HOME/.config/argos/yggtorrent/page_account.html | grep "/files/avatars/" | grep -oP 'http.?://\S+' | sed 's/"//'`
 IMAGE=$(curl -s "$avatar_url" | base64 -w 0)
  
 #### Get YGG icon
@@ -161,4 +161,5 @@ echo "---"
 echo "Mon Ratio     : $mon_ratio | ansi=true font=monospace trim=false"
 echo "Mon Upload    : $mon_upload | ansi=true font=monospace trim=false"
 echo "Mon Download  : $mon_download | ansi=true font=monospace trim=false"
+echo 
 echo "Mon Crédit    : $mon_credit_clair | ansi=true font=monospace trim=false"
