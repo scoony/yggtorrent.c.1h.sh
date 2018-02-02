@@ -1,7 +1,8 @@
 # yggtorrent.c.1h.sh
 ## Yggtorrent script for Argos (gnome-shell)
 
-> THIS SCRIPT IS ONLY IN FRENCH\n
+> THIS SCRIPT IS ONLY IN FRENCH
+
 > CE SCRIPT EST UNIQUEMENT EN FRANÇAIS
 
 **Fonction(s):**
