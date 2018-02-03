@@ -6,6 +6,7 @@
 > CE SCRIPT EST UNIQUEMENT EN FRANÇAIS
 
 **Fonction(s):**
+- Une mise à jout automatique est intérée au script, inutile de vous en occuper
 - récupérer et afficher les informations de votre compte YGGTORRENT
 - vérification de l'URL actuelle du site (tentative de suivre l'URL si elle change)
 - vérification de l'IP envoyée à ce site (un VPN protège t'il pour ce site précis)
