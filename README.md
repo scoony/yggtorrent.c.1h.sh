@@ -7,6 +7,8 @@
 
 **Fonction(s):**
 - récupérer et afficher les informations de votre compte YGGTORRENT
+- vérification de l'URL actuelle du site (tentative de suivre l'URL si elle change)
+- vérification de l'IP envoyée à ce site (un VPN protège t'il pour ce site précis)
 
 **Dépendances requises:**
 - aucune pour le moment
