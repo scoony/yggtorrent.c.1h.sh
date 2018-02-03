@@ -20,4 +20,4 @@ Il suffit simplement de copier/coller ça dans un terminal:
 `wget -q https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/yggtorrent.c.1h.sh -O ~/.config/argos/yggtorrent.c.1h.sh && sed -i -e 's/\r//g' ~/.config/argos/yggtorrent.c.1h.sh && chmod +x ~/.config/argos/yggtorrent.c.1h.sh`
 
 **Résultat:**
-![ScreenShot](https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.screenshots/Capture%20d%E2%80%99%C3%A9cran%20de%202018-02-02%2019-18-07.png)
+![ScreenShot](https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.screenshots/Capture%20d%E2%80%99%C3%A9cran%20de%202018-02-03%2008-29-39.png)
