@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.2"
+version="0.0.0.3"
 
 #### Nettoyage
 ## Ne fonctionne pas
@@ -8,12 +8,12 @@ if [[ -f "~/yggtorrent-update.sh" ]]; then
   rm $HOME/yggtorrent-update.sh
 fi
 
-#### Récupération des versions (locale et distante
+#### Récupération des versions (locale et distante)
 script_pastebin="https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/yggtorrent.c.1h.sh"
 local_version=$version
 pastebin_version=`wget -O- -q "$script_pastebin" | grep "^version=" | sed '/grep/d' | sed 's/.*version="//' | sed 's/".*//'`
 
-#### Comparaison des version et mise à jour si necessaire
+#### Comparaison des version et mise à jour si nécessaire
 vercomp () {
     if [[ $1 == $2 ]]
     then
@@ -99,25 +99,46 @@ icons_cache=`echo $HOME/.config/argos/.cache-icons`
 if [[ ! -f "$icons_cache" ]]; then
   mkdir -p $icons_cache
 fi
+if [[ ! -f "$icons_cache/yggtorrent.png" ]] ; then curl -o "$icons_cache/yggtorrent.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent.png" ; fi
+if [[ ! -f "$icons_cache/yggtorrent-bad.png" ]] ; then curl -o "$icons_cache/yggtorrent-bad.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent-bad.png" ; fi
 if [[ ! -f "$icons_cache/settings.png" ]] ; then curl -o "$icons_cache/settings.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/settings.png" ; fi
 if [[ ! -f "$icons_cache/ratio.png" ]] ; then curl -o "$icons_cache/ratio.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/ratio.png" ; fi
 if [[ ! -f "$icons_cache/upload.png" ]] ; then curl -o "$icons_cache/upload.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/upload.png" ; fi
 if [[ ! -f "$icons_cache/download.png" ]] ; then curl -o "$icons_cache/download.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/download.png" ; fi
 if [[ ! -f "$icons_cache/credits.png" ]] ; then curl -o "$icons_cache/credits.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/credits.png" ; fi
+if [[ ! -f "$icons_cache/url.png" ]] ; then curl -o "$icons_cache/url.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/url.png" ; fi
+if [[ ! -f "$icons_cache/vpn.png" ]] ; then curl -o "$icons_cache/vpn.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/vpn.png" ; fi
+if [[ ! -f "$icons_cache/unprotected.png" ]] ; then curl -o "$icons_cache/unprotected.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/unprotected.png" ; fi
 
 #### Mise en variable des icones
+YGGTORRENT_ICON=$(curl -s "file://$icons_cache/yggtorrent.png" | base64 -w 0)
+YGGTORRENT_BAD_ICON=$(curl -s "file://$icons_cache/yggtorrent-bad.png" | base64 -w 0)
 SETTINGS_ICON=$(curl -s "file://$icons_cache/settings.png" | base64 -w 0)
 RATIO_ICON=$(curl -s "file://$icons_cache/ratio.png" | base64 -w 0)
 UPLOAD_ICON=$(curl -s "file://$icons_cache/upload.png" | base64 -w 0)
 DOWNLOAD_ICON=$(curl -s "file://$icons_cache/download.png" | base64 -w 0)
 CREDITS_ICON=$(curl -s "file://$icons_cache/credits.png" | base64 -w 0)
+URL_ICON=$(curl -s "file://$icons_cache/url.png" | base64 -w 0)
+VPN_ICON=$(curl -s "file://$icons_cache/vpn.png" | base64 -w 0)
+UNPROTECTED_ICON=$(curl -s "file://$icons_cache/unprotected.png" | base64 -w 0)
 
 #### Récupération des informations de YGG
 ygg_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $1}'`
 ygg_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $2}'`
-website_url="https://yggtorrent.com"
+website_main_url="https://yggtorrent.com"
 
-#### Generation du cookie
+#### Vérification de l'URL (en cas de changement)
+if [[ ! -f "$HOME/.config/argos/yggtorrent/.website_url.conf" ]]; then
+  echo $website_main_url > $HOME/.config/argos/yggtorrent/.website_url.conf
+fi
+website_url=`cat $HOME/.config/argos/yggtorrent/.website_url.conf`
+current_url=`wget -q -O- "$website_url" | grep favicon | sed 's/.*href="//' | sed -n '1p' | sed 's/\/static.*//'`
+if [[ "$website_url" != "$current_url" ]]; then
+  sed -i 's/'$website_url'/'$current_url'/g' "$HOME/.config/argos/yggtorrent/.website_url.conf"
+  website_url=`echo $current_url`
+fi
+
+#### Génération du cookie
 website_login_page=`echo $website_url"/user/login"`
 wget -q --save-cookies $HOME/.config/argos/yggtorrent/cookies.txt --keep-session-cookies --post-data="id=$ygg_login&pass=$ygg_password" "$website_login_page"
 rm -f login 2>/dev/null
@@ -167,14 +188,22 @@ wget -q --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url/
 avatar_url=`cat $HOME/.config/argos/yggtorrent/page_account.html | grep "/files/avatars/" | grep -oP 'http.?://\S+' | sed 's/"//'`
 IMAGE=$(curl -s "$avatar_url" | base64 -w 0)
 
+#### Vérification que notre IP est masquée pour ce site
+vpn_domain=$(echo $website_url | sed 's/^http:\/\/www\.//' | sed 's/^https:\/\/www\.//' | sed 's/^http:\/\///' | sed 's/^https:\/\///')
+vpn_ip_check=`ip route get $(host $vpn_domain | sed -n '1p' | awk '{print $4}') | awk '{print $5}' | sed -n '1p'`
+if [[ "$vpn_ip_check" == "tun0" ]]; then
+  ip_status="masquée par VPN"
+  ip_status_icon=$VPN_ICON
+else
+  ip_status="non protégée"
+  ip_status_icon=$UNPROTECTED_ICON
+fi
+
 #### Préparation des paramètres
 account_infos=`echo -e "zenity --forms --width=500 --window-icon=\"~/.config/argos/.cache-icons/yggtorrent.png\" --title=\"Authentification du compte\" --text=\"Veuillez entrer vos informations\" --add-entry=\"Identifiant YGG\" --add-entry=\"Mot de passe YGG\" --separator=\" \" 2>/dev/null >~/.config/argos/.yggtorrent-account"`
  
-#### Récupération du favicon de YGG
-YGG_ICON=$(curl -s "https://yggtorrent.com/static/images/favicon-32x32.png" | base64 -w 0)
-
 #### On affice le résultat
-echo " $mon_credit_clair | image='$YGG_ICON' imageWidth=32"
+echo " $mon_credit_clair | image='$YGGTORRENT_ICON' imageWidth=25"
 echo "---"
 printf "%19s | ansi=true font='Ubuntu Mono' trim=false size=20 href=$website_url terminal=false image=$IMAGE imageWidth=80 \n" "$ygg_login"
 echo "---"
@@ -182,5 +211,8 @@ printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubu
 printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Upload" "$mon_upload" "$UPLOAD_ICON"
 printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Download" "$mon_download" "$DOWNLOAD_ICON"
 printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Credits restants" "$mon_credit_clair" "$CREDITS_ICON"
+echo "---"
+printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "URL actuelle" "$website_url" "$ip_status_icon"
+printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Status de l'IP" "$ip_status" "$URL_ICON"
 echo "---"
 printf "%-2s %s | image='$SETTINGS_ICON' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false bash='$account_infos' terminal=false \n" "" "Paramètres du compte YGG"
