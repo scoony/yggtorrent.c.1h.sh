@@ -6,13 +6,13 @@
 > CE SCRIPT EST UNIQUEMENT EN FRANÇAIS
 
 **Fonction(s):**
-- Une mise à jout automatique est intérée au script, inutile de vous en occuper
+- Une mise à jout automatique est intégrée au script, inutile de vous en occuper
 - récupérer et afficher les informations de votre compte YGGTORRENT (ratio, download, upload et crédits restants)
 - vérification de l'URL actuelle du site (tentative de suivre l'URL si elle change)
 - vérification de l'IP envoyée à ce site (un VPN protège t'il pour ce site précis)
 
 **Dépendances requises:**
-- aucune pour le moment
+- `sudo apt install yag`
 
 **Installation facile:**
 
