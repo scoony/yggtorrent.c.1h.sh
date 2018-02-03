@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.1"
+version="0.0.0.2"
 
 #### Nettoyage
 ## Ne fonctionne pas
@@ -100,9 +100,17 @@ if [[ ! -f "$icons_cache" ]]; then
   mkdir -p $icons_cache
 fi
 if [[ ! -f "$icons_cache/settings.png" ]] ; then curl -o "$icons_cache/settings.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/settings.png" ; fi
+if [[ ! -f "$icons_cache/ratio.png" ]] ; then curl -o "$icons_cache/ratio.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/ratio.png" ; fi
+if [[ ! -f "$icons_cache/upload.png" ]] ; then curl -o "$icons_cache/upload.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/upload.png" ; fi
+if [[ ! -f "$icons_cache/download.png" ]] ; then curl -o "$icons_cache/download.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/download.png" ; fi
+if [[ ! -f "$icons_cache/credits.png" ]] ; then curl -o "$icons_cache/credits.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/credits.png" ; fi
 
 #### Mise en variable des icones
 SETTINGS_ICON=$(curl -s "file://$icons_cache/settings.png" | base64 -w 0)
+RATIO_ICON=$(curl -s "file://$icons_cache/ratio.png" | base64 -w 0)
+UPLOAD_ICON=$(curl -s "file://$icons_cache/upload.png" | base64 -w 0)
+DOWNLOAD_ICON=$(curl -s "file://$icons_cache/download.png" | base64 -w 0)
+CREDITS_ICON=$(curl -s "file://$icons_cache/credits.png" | base64 -w 0)
 
 #### Récupération des informations de YGG
 ygg_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $1}'`
@@ -170,9 +178,9 @@ echo " $mon_credit_clair | image='$YGG_ICON' imageWidth=32"
 echo "---"
 printf "%19s | ansi=true font='Ubuntu Mono' trim=false size=20 href=$website_url terminal=false image=$IMAGE imageWidth=80 \n" "$ygg_login"
 echo "---"
-printf "%-3s \e[1m%-19s :\e[0m %-22s | ansi=true font='Ubuntu Mono' trim=false \n" ":arrow_up_down:" "Mon Ratio" "$mon_ratio"
-printf "%-3s \e[1m%-19s :\e[0m %-22s | ansi=true font='Ubuntu Mono' trim=false \n" ":arrow_up:" "Mon Upload" "$mon_upload"
-printf "%-3s \e[1m%-19s :\e[0m %-22s | ansi=true font='Ubuntu Mono' trim=false \n" ":arrow_down:" "Mon Download" "$mon_download"
-printf "%-3s \e[1m%-19s :\e[0m %-22s | ansi=true font='Ubuntu Mono' trim=false \n" ":arrow_right_hook:" "Mon Credit" "$mon_credit_clair"
+printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Ratio" "$mon_ratio" "$RATIO_ICON"
+printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Upload" "$mon_upload" "$UPLOAD_ICON"
+printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Download" "$mon_download" "$DOWNLOAD_ICON"
+printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Credits restants" "$mon_credit_clair" "$CREDITS_ICON"
 echo "---"
 printf "%-2s %s | image='$SETTINGS_ICON' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false bash='$account_infos' terminal=false \n" "" "Paramètres du compte YGG"
