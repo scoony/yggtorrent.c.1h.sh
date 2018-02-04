@@ -236,4 +236,4 @@ if [[ "$forum_login" != "" ]] && [[ "$forum_password" != "" ]]; then
   printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Messagerie Forum" "$get_message_amount message(s) non-lu(s)" "$MESSAGE_ICON"
 fi
 echo "---"
-printf "%-2s %s | image='$SETTINGS_ICON' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false bash='$account_infos' terminal=false \n" "" "Paramètres du compte YGG"
+printf "%-2s %s | image='$SETTINGS_ICON' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false bash='$account_infos' terminal=false \n" "" "Paramètres de l'extension"
