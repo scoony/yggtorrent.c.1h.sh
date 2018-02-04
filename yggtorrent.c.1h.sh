@@ -142,7 +142,7 @@ if [[ "$website_url" != "$current_url" ]]; then
 fi
 
 #### Récupération de l'URL du site via Twitter
-website_url_twitter=`wget -O- -q https://twitter.com/yggtorrent_com | grep "ProfileHeaderCard-urlText" | grep -Po '(?<=title=")[^"]*'`
+website_url_twitter=`wget -O- -q https://twitter.com/yggtorrent_com | grep "ProfileHeaderCard-urlText" | grep -Po '(?<=title=")[^"]*' | sed 's/\/$//'`
 
 #### Génération du cookie
 website_login_page=`echo $website_url"/user/login"`
