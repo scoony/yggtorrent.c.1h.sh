@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.7"
+version="0.0.0.8"
 
 #### Nettoyage
 ## Ne fonctionne pas
@@ -140,6 +140,9 @@ if [[ "$website_url" != "$current_url" ]]; then
   sed -i 's/'$website_url'/'$current_url'/g' "$HOME/.config/argos/yggtorrent/.website_url.conf"
   website_url=`echo $current_url`
 fi
+
+#### Récupération de l'URL du site via Twitter
+website_url_twitter=`wget -O- -q https://twitter.com/yggtorrent_com | grep "ProfileHeaderCard-urlText" | grep -Po '(?<=title=")[^"]*'`
 
 #### Génération du cookie
 website_login_page=`echo $website_url"/user/login"`
