@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.5"
+version="0.0.0.6"
 
 #### Nettoyage
 ## Ne fonctionne pas
@@ -125,8 +125,8 @@ UNPROTECTED_ICON=$(curl -s "file://$icons_cache/unprotected.png" | base64 -w 0)
 MESSAGE_ICON=$(curl -s "file://$icons_cache/message.png" | base64 -w 0)
 
 #### Récupération des informations de YGG
-ygg_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $1}'`
-ygg_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $2}'`
+ygg_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $1}' FS="§"`
+ygg_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $2}' FS="§"`
 website_main_url="https://yggtorrent.com"
 forum_url="https://forum.yggtorrent.com"
 
@@ -176,6 +176,30 @@ humanise() {
     echo "$b$d ${S[$s]}"
 }
 
+#### Déclaration du système de méssages PUSH
+## usage: push-message "title" "message"
+push_system_status=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $5}' FS="§"`
+token_app=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $6}' FS="§"`
+destinataire_1=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $7}' FS="§"`
+push-message() {
+  push_title=$1
+  push_content=$2
+  zenity --notification --window-icon="$HOME/.config/argos/.cache-icons/yggtorrent-bad.png" --text "$push_content" 2>/dev/null
+  for user in {1..10}; do
+    destinataire=`eval echo "\\$destinataire_"$user`
+    if [ -n "$destinataire" ]; then
+      curl -s \
+        --form-string "token=$token_app" \
+        --form-string "user=$destinataire" \
+        --form-string "title=$push_title" \
+        --form-string "message=$push_content" \
+        --form-string "html=1" \
+        --form-string "priority=0" \
+        https://api.pushover.net/1/messages.json > /dev/null
+    fi
+  done
+}
+
 #### Récupération des détails du compte
 wget -q --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url" -O $HOME/.config/argos/yggtorrent/page.html
 mon_ratio=`cat $HOME/.config/argos/yggtorrent/page.html | grep Ratio | sed 's/.*Ratio \: //' | sed 's/<\/a>.*//'`
@@ -206,8 +230,8 @@ fi
 
 #### Récupération de données sur le forum
 forum_login_page=`echo $forum_url"/index.php?app=core&module=global&section=login&do=process"`
-forum_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $3}'`
-forum_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $4}'`
+forum_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $3}' FS="§"`
+forum_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $4}' FS="§"`
 wget -q "$forum_url" -O "$HOME/.config/argos/yggtorrent/forum_page_key.html"
 forum_auth_key=`cat $HOME/.config/argos/yggtorrent/forum_page_key.html | grep "auth_key" | sed '/grep/d' | sed -n '1p' | grep -Po "(?<=value=')[^']*"`
 wget -q --save-cookies $HOME/.config/argos/yggtorrent/forum_cookies.txt --keep-session-cookies --post-data="auth_key=$forum_auth_key&referer=http%3A%2F%2Fforum.yggtorrent.com%2Findex.php&ips_username=$forum_login&ips_password=$forum_password&rememberMe=1" "$forum_login_page"
@@ -218,7 +242,7 @@ if [[ "$get_message_amount" == "" ]]; then
 fi
 
 #### Préparation des paramètres
-account_infos=`echo -e "yad --width=\"600\" --height=\"300\" --center --window-icon=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --title=\"Authentification du compte\" --text=\"<big>\r\rVeuillez entrer vos informations de compte(s).\rCes informations ne sont pas stockées sur internet.\r\r</big>\" --text-align=center --image=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --form --separator=\" \" --field=\"Identifiant du site\" --field=\"Mot de passe du site\" --field=\"Identifiant du forum\" --field=\"Mot de passe du forum\" \"$ygg_login\" \"$ygg_password\" \"$forum_login\" \"$forum_password\" --button=gtk-ok:0 2>/dev/null >~/.config/argos/.yggtorrent-account"`
+account_infos=`echo -e "yad --width=\"600\" --height=\"300\" --center --window-icon=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --title=\"Authentification du compte\" --text=\"<big>\r\rVeuillez entrer vos informations de compte(s).\rCes informations ne sont pas stockées sur internet.\r\r</big>\" --text-align=center --image=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --form --separator=\"§\" --field=\"Identifiant du site\" --field=\"Mot de passe du site\" --field=\"Identifiant du forum\" --field=\"Mot de passe du forum\" --field=\"Activer les notification PushOver:CHK\" --field=\"API KEY\" --field=\"USER_KEY\" \"$ygg_login\" \"$ygg_password\" \"$forum_login\" \"$forum_password\" \"$push_system_status\" \"$token_app\" \"$destinataire_1\" --button=gtk-ok:0 2>/dev/null >~/.config/argos/.yggtorrent-account"`
 
 #### On affice le résultat
 echo " $mon_credit_clair | image='$YGGTORRENT_ICON' imageWidth=25"
