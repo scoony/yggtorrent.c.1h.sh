@@ -6,9 +6,13 @@
 > CE SCRIPT EST UNIQUEMENT EN FRANÇAIS
 
 **IMPORTANT:**
-![gnome-shell](https://github.com/scoony/yggtorrent.c.1h.sh/blob/master/.cache-icons/extensions-gnome.png
+
+![gnome-shell](https://github.com/scoony/yggtorrent.c.1h.sh/blob/master/.cache-icons/extensions-gnome.png)
+
 Ce script exploite Argos, vous devez imperativement l'avoir installé préalablement.
+
 Page officielle de l'extension à installer: https://extensions.gnome.org/extension/1176/argos/
+
 GitHub officiel de Argos: https://github.com/p-e-w/argos
 
 **Fonction(s):**
