@@ -5,7 +5,7 @@
 
 > CE SCRIPT EST UNIQUEMENT EN FRANÇAIS
 
-**IMPORTANT:**
+__**IMPORTANT:**__
 
 ![gnome-shell](https://github.com/scoony/yggtorrent.c.1h.sh/blob/master/.cache-icons/extensions-gnome.png)
 
