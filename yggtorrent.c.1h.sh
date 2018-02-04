@@ -218,7 +218,7 @@ if [[ "$get_message_amount" == "" ]]; then
 fi
 
 #### Préparation des paramètres
-account_infos=`echo -e "yad --width=\"600\" --height=\"300\" --center --window-icon=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --title=\"Authentification du compte\" --text=\"<big>\r\rVeuillez entrer vos informations de compte(s).\rCes informations ne transittent pas par internet.\r\r</big>\" --text-align=center --image=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --form --separator=\" \" --field=\"Identifiant du site\" --field=\"Mot de passe du site\" --field=\"Identifiant du forum\" --field=\"Mot de passe du forum\" \"$ygg_login\" \"$ygg_password\" \"$forum_login\" \"$forum_password\" --button=gtk-ok:0 2>/dev/null >~/.config/argos/.yggtorrent-account"`
+account_infos=`echo -e "yad --width=\"600\" --height=\"300\" --center --window-icon=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --title=\"Authentification du compte\" --text=\"<big>\r\rVeuillez entrer vos informations de compte(s).\rCes informations ne sont pas stockées sur internet.\r\r</big>\" --text-align=center --image=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --form --separator=\" \" --field=\"Identifiant du site\" --field=\"Mot de passe du site\" --field=\"Identifiant du forum\" --field=\"Mot de passe du forum\" \"$ygg_login\" \"$ygg_password\" \"$forum_login\" \"$forum_password\" --button=gtk-ok:0 2>/dev/null >~/.config/argos/.yggtorrent-account"`
 
 #### On affice le résultat
 echo " $mon_credit_clair | image='$YGGTORRENT_ICON' imageWidth=25"
