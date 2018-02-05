@@ -9,19 +9,19 @@
 
 ![gnome-shell](https://github.com/scoony/yggtorrent.c.1h.sh/blob/master/.cache-icons/extensions-gnome.png) ![gnome-shell](https://github.com/scoony/yggtorrent.c.1h.sh/blob/master/.cache-icons/pushover.png)
 
-Ce script exploite Argos, vous devez imperativement l'avoir installé préalablement.
++ Ce script exploite Argos, vous devez imperativement l'avoir installé préalablement.
 
-Page officielle de l'extension à installer: https://extensions.gnome.org/extension/1176/argos/
+  - Page officielle de l'extension à installer: https://extensions.gnome.org/extension/1176/argos/
 
-GitHub officiel de Argos: https://github.com/p-e-w/argos
+  - GitHub officiel de Argos: https://github.com/p-e-w/argos
 
-Les notifications push de ce scripts utilisent le système PushOver
++ Les notifications push de ce scripts utilisent le système PushOver
 
-Page officielle de PushOver: https://pushover.net/
+  - Page officielle de PushOver: https://pushover.net/
 
-Lien vers la boutique Android: https://play.google.com/store/apps/details?id=net.superblock.pushover
+  - Lien vers la boutique Android: https://play.google.com/store/apps/details?id=net.superblock.pushover
 
-Lien vers la boutique Apple: https://itunes.apple.com/us/app/pushover-notifications/id506088175
+  - Lien vers la boutique Apple: https://itunes.apple.com/us/app/pushover-notifications/id506088175
 
 **Fonction(s):**
 - une mise à jout automatique est intégrée au script, inutile de vous en occuper
