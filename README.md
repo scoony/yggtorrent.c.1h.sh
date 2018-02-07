@@ -27,7 +27,8 @@
 - un système de message push est intégré (donc notifications sur les téléphones mobiles)
 
 **Dépendances requises:**
-- `sudo apt install yad`
+- `sudo apt-get install yad`
+- `sudo apt-get install curl`
 
 **Installation facile:**
 
