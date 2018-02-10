@@ -4,7 +4,7 @@ version="0.0.0.10"
 
 #### Création du dossier de notre extension (si il n'existe pas)
 if [[ ! -d "$HOME/.config/argos/yggtorrent" ]]; then
-  mkdir -p %HOME/.config/argos/yggtorrent
+  mkdir -p $HOME/.config/argos/yggtorrent
 fi
 
 #### Récupération des versions (locale et distante)
