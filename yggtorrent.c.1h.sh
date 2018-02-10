@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-version="0.0.0.8"
+version="0.0.0.9"
+
+#### Création du dossier de notre extension (si il n'existe pas)
+if [[ ! -d "%HOME/.config/argos/yggtorrent" ]]; then
+  mkdir -p %HOME/.config/argos/yggtorrent
+fi
 
 #### Récupération des versions (locale et distante)
 script_pastebin="https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/yggtorrent.c.1h.sh"
