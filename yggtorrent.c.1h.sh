@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-version="0.0.0.9"
+version="0.0.0.10"
 
 #### Création du dossier de notre extension (si il n'existe pas)
-if [[ ! -d "%HOME/.config/argos/yggtorrent" ]]; then
+if [[ ! -d "$HOME/.config/argos/yggtorrent" ]]; then
   mkdir -p %HOME/.config/argos/yggtorrent
 fi
 
