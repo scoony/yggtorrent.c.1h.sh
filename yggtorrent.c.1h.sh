@@ -123,13 +123,6 @@ VPN_ICON=$(curl -s "file://$icons_cache/vpn.png" | base64 -w 0)
 UNPROTECTED_ICON=$(curl -s "file://$icons_cache/unprotected.png" | base64 -w 0)
 MESSAGE_ICON=$(curl -s "file://$icons_cache/message.png" | base64 -w 0)
 
-#### Si le site est trop lent
-website_response_time=`curl --max-time 5 -s -w %{time_total}\\n -o /dev/null $website_url | sed 's/,.*//'`
-if [ "$website_response_time" -ge "5" ]; then
-  echo " Site Inaccessible | image='$YGGTORRENT_BAD_ICON' imageWidth=25"
-  exit 1
-fi
-
 #### Récupération des informations de YGG
 ygg_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $1}' FS="§"`
 ygg_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $2}' FS="§"`
@@ -149,6 +142,13 @@ fi
 
 #### Récupération de l'URL du site via Twitter
 website_url_twitter=`wget -O- -q https://twitter.com/yggtorrent_com | grep "ProfileHeaderCard-urlText" | grep -Po '(?<=title=")[^"]*' | sed 's/\/$//'`
+
+#### Si le site est trop lent
+website_response_time=`curl --max-time 5 -s -w %{time_total}\\n -o /dev/null $website_url | sed 's/,.*//'`
+if [ "$website_response_time" -ge "5" ]; then
+  echo " Site Inaccessible | image='$YGGTORRENT_BAD_ICON' imageWidth=25"
+  exit 1
+fi
 
 #### Génération du cookie
 website_login_page=`echo $website_url"/user/login"`
