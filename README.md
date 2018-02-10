@@ -19,7 +19,7 @@
   - Lien vers la boutique Apple: https://itunes.apple.com/us/app/pushover-notifications/id506088175
 
 **Fonction(s):**
-- une mise à jout automatique est intégrée au script, inutile de vous en occuper
+- une mise à jour automatique est intégrée au script, inutile de vous en occuper
 - récupérer et afficher les informations de votre compte YGGTORRENT (ratio, download, upload et crédits restants)
 - vérification de l'URL actuelle du site (tentative de suivre l'URL si elle change)
 - vérification de l'IP envoyée à ce site (un VPN protège t'il pour ce site précis)
