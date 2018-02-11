@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.11"
+version="0.0.0.12"
 
 #### Création du dossier de notre extension (si il n'existe pas)
 if [[ ! -d "$HOME/.config/argos/yggtorrent" ]]; then
@@ -59,6 +59,7 @@ compare=`testvercomp $local_version $pastebin_version '<' | grep Pass`
 if [[ "$compare" != "" ]] ; then
   update_required="Mise à jour disponible"
   (
+  echo "0"
   echo "# Creation de l'updater." ; sleep 2
   touch ~/yggtorrent-update.sh
   echo "25"
@@ -74,23 +75,13 @@ if [[ "$compare" != "" ]] ; then
   echo "sed -i -e 's/\r//g' ~/.config/argos/yggtorrent.c.1h.sh" >> ~/yggtorrent-update.sh
   echo "echo \"100\"" >> ~/yggtorrent-update.sh
   echo ") |" >> ~/yggtorrent-update.sh
-  echo "zenity --progress \\" >> ~/yggtorrent-update.sh
-  echo "  --title=\"Mise à jour de YGGTorrent\" \\" >> ~/yggtorrent-update.sh
-  echo "  --text=\"Démarrage du processus.\" \\" >> ~/yggtorrent-update.sh
-  echo "  --percentage=0 \\" >> ~/yggtorrent-update.sh
-  echo "  --auto-close \\" >> ~/yggtorrent-update.sh
-  echo "  --auto-kill" >> ~/yggtorrent-update.sh
+  echo "yad --undecorated --width=500 --progress --center --no-buttons --no-escape --skip-taskbar --image="$HOME/.config/argos/.cache-icons/updater.png" --text-align="center" --text="\rUne mise à jour de <b>yggtorrent.c.1h.sh</b> a été detectée.\r\rVersion locale: <b>$local_version</b>\rVersion distante: <b>$pastebin_version</b>\r\r<b>Installation de la mise à jour...</b>\r" --auto-kill --auto-close" >> ~/yggtorrent-update.sh
   echo "75"
   echo "# Lancement de l'updater." ; sleep 2
   bash ~/yggtorrent-update.sh
   exit 1
 ) |
-zenity --progress \
-  --title="Mise à jour de YGGTorrent" \
-  --text="Démarrage du processus." \
-  --percentage=0 \
-  --auto-close \
-  --auto-kill
+yad --undecorated --width=500 --progress --center --no-buttons --no-escape --skip-taskbar --image="$HOME/.config/argos/.cache-icons/updater.png" --text-align="center" --text="\rUne mise à jour de <b>yggtorrent.c.1h.sh</b> a été detectée.\r\rVersion locale: <b>$local_version</b>\rVersion distante: <b>$pastebin_version</b>\r\r<b>Installation de la mise à jour...</b>\r" --auto-kill --auto-close
 fi
 
 #### Vérification du cache des icones (ou création)
