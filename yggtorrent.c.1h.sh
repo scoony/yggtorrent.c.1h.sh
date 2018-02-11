@@ -100,6 +100,7 @@ if [[ ! -f "$icons_cache" ]]; then
 fi
 if [[ ! -f "$icons_cache/yggtorrent.png" ]] ; then curl -o "$icons_cache/yggtorrent.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent.png" ; fi
 if [[ ! -f "$icons_cache/yggtorrent-bad.png" ]] ; then curl -o "$icons_cache/yggtorrent-bad.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent-bad.png" ; fi
+if [[ ! -f "$icons_cache/yggtorrent-big.png" ]] ; then curl -o "$icons_cache/yggtorrent-big.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent-big.png" ; fi
 if [[ ! -f "$icons_cache/settings.png" ]] ; then curl -o "$icons_cache/settings.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/settings.png" ; fi
 if [[ ! -f "$icons_cache/ratio.png" ]] ; then curl -o "$icons_cache/ratio.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/ratio.png" ; fi
 if [[ ! -f "$icons_cache/upload.png" ]] ; then curl -o "$icons_cache/upload.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/upload.png" ; fi
