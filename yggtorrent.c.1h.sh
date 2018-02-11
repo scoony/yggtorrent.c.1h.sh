@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.12"
+version="0.0.0.13"
 
 #### Création du dossier de notre extension (si il n'existe pas)
 if [[ ! -d "$HOME/.config/argos/yggtorrent" ]]; then
@@ -75,8 +75,7 @@ if [[ "$compare" != "" ]] ; then
   echo "sed -i -e 's/\r//g' ~/.config/argos/yggtorrent.c.1h.sh" >> ~/yggtorrent-update.sh
   echo "echo \"100\"" >> ~/yggtorrent-update.sh
   echo ") |" >> ~/yggtorrent-update.sh
-  echo "yad --undecorated --width=500 --progress --center --no-buttons --no-escape --skip-taskbar --image="$HOME/.config/argos/.cache-icons/updater.png" --text-align="center" --text="\rUne mise à jour de <b>yggtorrent.c.1h.sh</b> a été detectée.\r\rVersion locale: <b>$local_version</b>\rVersion distante: <b>$pastebin_version</b>\r\r<b>Installation de la mise à jour...</b>\r" --auto-kill --auto-close" >> ~/yggtorrent-update.sh
-  echo "75"
+  echo "yad --undecorated --width=500 --progress --center --no-buttons --no-escape --skip-taskbar --image=\"$HOME/.config/argos/.cache-icons/updater.png\" --text-align=\"center\" --text=\"\rUne mise à jour de <b>yggtorrent.c.1h.sh</b> a été detectée.\r\rVersion locale: <b>$local_version</b>\rVersion distante: <b>$pastebin_version</b>\r\r<b>Installation de la mise à jour...</b>\r\" --auto-kill --auto-close" >> ~/yggtorrent-update.sh  echo "75"
   echo "# Lancement de l'updater." ; sleep 2
   bash ~/yggtorrent-update.sh
   exit 1
