@@ -88,6 +88,7 @@ icons_cache=`echo $HOME/.config/argos/.cache-icons`
 if [[ ! -f "$icons_cache" ]]; then
   mkdir -p $icons_cache
 fi
+if [[ ! -f "$icons_cache/updater.png" ]] ; then curl -o "$icons_cache/updater.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/updater.png" ; fi
 if [[ ! -f "$icons_cache/yggtorrent.png" ]] ; then curl -o "$icons_cache/yggtorrent.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent.png" ; fi
 if [[ ! -f "$icons_cache/yggtorrent-bad.png" ]] ; then curl -o "$icons_cache/yggtorrent-bad.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent-bad.png" ; fi
 if [[ ! -f "$icons_cache/yggtorrent-big.png" ]] ; then curl -o "$icons_cache/yggtorrent-big.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent-big.png" ; fi
