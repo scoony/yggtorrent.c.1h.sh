@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.13"
+version="0.0.0.14"
 
 #### Création du dossier de notre extension (si il n'existe pas)
 if [[ ! -d "$HOME/.config/argos/yggtorrent" ]]; then
@@ -246,7 +246,9 @@ account_infos=`echo -e "yad --width=\"600\" --height=\"300\" --center --window-i
 
 #### Nettoyage final
 rm -f index.php* 2>/dev/null
+rm -f index.* 2>/dev/null
 rm -f login 2>/dev/null
+rm -f login.* 2>/dev/null
 rm -f yggtorrent-update.sh 2>/dev/null
 
 #### On affice le résultat
