@@ -2,6 +2,28 @@
 
 version="0.0.0.14"
 
+#### Vérification des dépendances
+if [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
+if [[ ! -f "/usr/bin/curl" ]]; then curl_missing="1"; fi
+if [[ ! -f "/usr/bin/gawk" ]]; then gawk_missing="1"; fi
+if [[ ! -f "/usr/bin/wget" ]]; then wget_missing="1"; fi
+if [[ ! -f "/bin/grep" ]]; then grep_missing="1"; fi
+if [[ ! -f "/bin/sed" ]]; then sed_missing="1"; fi
+if [[ "$yad_missing" == "1" ]] || [[ "$curl_missing" == "1" ]] || [[ "$gawk_missing" == "1" ]] || [[ "$wget_missing" == "1" ]] || [[ "$grep_missing" == "1" ]] || [[ "$sed_missing" == "1" ]]; then
+  YGGTORRENT_BAD_ICON=$(curl -s "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent-bad.png" | base64 -w 0)
+  echo " Erreur(s) | image='$YGGTORRENT_BAD_ICON' imageWidth=25"
+  echo "---"
+  if [[ "$yad_missing" == "1" ]]; then echo -e "\e[1mDépendance manquante      :\e[0m sudo apt-get install yad | ansi=true font='Ubuntu Mono'"; fi
+  if [[ "$curl_missing" == "1" ]]; then echo -e "\e[1mDépendance manquante      :\e[0m sudo apt-get install curl | ansi=true font='Ubuntu Mono'"; fi
+  if [[ "$gawk_missing" == "1" ]]; then echo -e "\e[1mDépendance manquante      :\e[0m sudo apt-get install gawk | ansi=true font='Ubuntu Mono'"; fi
+  if [[ "$wget_missing" == "1" ]]; then echo -e "\e[1mDépendance manquante      :\e[0m sudo apt-get install wget | ansi=true font='Ubuntu Mono'"; fi
+  if [[ "$grep_missing" == "1" ]]; then echo -e "\e[1mDépendance manquante      :\e[0m sudo apt-get install grep | ansi=true font='Ubuntu Mono'"; fi
+  if [[ "$sed_missing" == "1" ]]; then echo -e "\e[1mDépendance manquante      :\e[0m sudo apt-get install sed | ansi=true font='Ubuntu Mono'"; fi
+  echo "---"
+  echo "Rafraichir | refresh=true"
+  exit 1
+fi
+
 #### Création du dossier de notre extension (si il n'existe pas)
 if [[ ! -d "$HOME/.config/argos/yggtorrent" ]]; then
   mkdir -p $HOME/.config/argos/yggtorrent
