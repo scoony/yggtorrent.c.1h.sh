@@ -29,6 +29,7 @@
 **Dépendances requises:**
 - `sudo apt-get install yad`
 - `sudo apt-get install curl`
+- `sudo apt-get install gawk`
 
 **Installation facile:**
 
