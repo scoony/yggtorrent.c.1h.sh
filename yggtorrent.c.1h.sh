@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.14"
+version="0.0.0.15"
 
 #### Vérification des dépendances
 if [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
@@ -233,7 +233,18 @@ if [[ "$mon_ratio" != "" ]]; then
   mon_credit=$(($mon_upload_detail-$mon_download_detail))
   mon_credit_clair=`humanise $mon_credit`
 fi
- 
+
+#### Si aucun réglage n'a été fait
+if [[ "$mon_ratio" == "" ]]; then
+  account_infos=`echo -e "yad --width=\"600\" --height=\"300\" --center --window-icon=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --title=\"Paramètres généraux\" --text=\"<big>\r\rVeuillez entrer vos informations de compte(s).\rCes informations ne sont pas stockées sur internet.\r\r</big>\" --text-align=center --image=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --form --separator=\"§\" --field=\"Identifiant du site\" --field=\"Mot de passe du site\" --field=\"Identifiant du forum\" --field=\"Mot de passe du forum\" --field=\"Activer les notifications PushOver:CHK\" --field=\"API KEY\" --field=\"USER_KEY\" \"$ygg_login\" \"$ygg_password\" \"$forum_login\" \"$forum_password\" \"$push_system_status\" \"$token_app\" \"$destinataire_1\" --button=gtk-ok:0 2>/dev/null >~/.config/argos/.yggtorrent-account"`
+  echo " YGGTORRENT | image='$YGGTORRENT_BAD_ICON' imageWidth=25"
+  echo "---"
+  echo "Vous devez éditer les paramètres"
+  echo "---"
+  printf "%-2s %s | image='$SETTINGS_ICON' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false bash='$account_infos' terminal=false \n" "" "Paramètres de l'extension"
+  exit 1
+fi
+
 #### Récupération de l'avatar du membre
 wget -q --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url/user/account" -O $HOME/.config/argos/yggtorrent/page_account.html
 avatar_url=`cat $HOME/.config/argos/yggtorrent/page_account.html | grep "/files/avatars/" | grep -oP 'http.?://\S+' | sed 's/"//'`
