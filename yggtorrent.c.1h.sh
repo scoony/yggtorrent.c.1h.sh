@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-version="0.0.0.15"
+version="0.0.0.16"
 
 #### Vérification des dépendances
-if [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
-if [[ ! -f "/usr/bin/curl" ]]; then curl_missing="1"; fi
-if [[ ! -f "/usr/bin/gawk" ]]; then gawk_missing="1"; fi
-if [[ ! -f "/usr/bin/wget" ]]; then wget_missing="1"; fi
-if [[ ! -f "/bin/grep" ]]; then grep_missing="1"; fi
-if [[ ! -f "/bin/sed" ]]; then sed_missing="1"; fi
+if [[ ! -f "/bin/yad" ]] && [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
+if [[ ! -f "/bin/curl" ]] && [[ ! -f "/usr/bin/curl" ]]; then curl_missing="1"; fi
+if [[ ! -f "/bin/gawk" ]] && [[ ! -f "/usr/bin/gawk" ]]; then gawk_missing="1"; fi
+if [[ ! -f "/bin/wget" ]] && [[ ! -f "/usr/bin/wget" ]]; then wget_missing="1"; fi
+if [[ ! -f "/bin/grep" ]] && [[ ! -f "/usr/bin/grep" ]]; then grep_missing="1"; fi
+if [[ ! -f "/bin/sed" ]] && [[ ! -f "/usr/bin/sed" ]]; then sed_missing="1"; fi
 if [[ "$yad_missing" == "1" ]] || [[ "$curl_missing" == "1" ]] || [[ "$gawk_missing" == "1" ]] || [[ "$wget_missing" == "1" ]] || [[ "$grep_missing" == "1" ]] || [[ "$sed_missing" == "1" ]]; then
   YGGTORRENT_BAD_ICON=$(curl -s "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent-bad.png" | base64 -w 0)
   echo " Erreur(s) | image='$YGGTORRENT_BAD_ICON' imageWidth=25"
