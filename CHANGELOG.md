@@ -1,3 +1,7 @@
+**Version: 0.0.0.19**
+- Petit fix pour le popup si aucune configuration
+- Affichage en cas de soucis d'identifiants pour le forum 
+
 **Version: 0.0.0.18**
 - Ajout possible d'un user-agent pour les requetes wget
 - Quelques retouches graphiques au niveau de la fenêtre des paramètres 
