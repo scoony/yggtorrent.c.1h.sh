@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.18"
+version="0.0.0.19"
 
 #### Vérification des dépendances
 if [[ ! -f "/bin/yad" ]] && [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
@@ -240,7 +240,7 @@ fi
 
 #### Si aucun réglage n'a été fait
 if [[ "$mon_ratio" == "" ]]; then
-  account_infos=`echo -e "yad --width=\"1000\" --height=\"300\" --center --window-icon=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --title=\"Paramètres généraux\" --text=\"<big>\r\rVeuillez entrer vos informations de compte(s).\rCes informations ne sont pas stockées sur internet.\r\r</big>\" --text-align=center --image=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --form --separator=\"§\" --field=\"Identifiant du site\" --field=\"Mot de passe du site\" --field=\"Identifiant du forum\" --field=\"Mot de passe du forum\" --field=\"Activer les notifications PushOver:CHK\" --field=\"API KEY\" --field=\"USER_KEY\" \"$ygg_login\" \"$ygg_password\" \"$forum_login\" \"$forum_password\" \"$push_system_status\" \"$token_app\" \"$destinataire_1\" --button=gtk-ok:0 2>/dev/null >~/.config/argos/.yggtorrent-account"`
+  account_infos=`echo -e "yad --fixed --undecorated --no-escape --skip-taskbar --width=\"700\" --height=\"300\" --center --borders=20 --window-icon=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --title=\"Paramètres généraux\" --text=\"<big>\r\rVeuillez entrer vos informations de compte(s).\rCes informations ne sont pas stockées sur internet.\r\r</big>\" --text-align=center --image=\"$HOME/.config/argos/.cache-icons/yggtorrent-big.png\" --form --separator=\"§\" --field=\"Identifiant du site\" --field=\"Mot de passe du site\" --field=\"Identifiant du forum\" --field=\"Mot de passe du forum\" --field=\" \":LBL --field=\"Activer les notifications PushOver:CHK\" --field=\"API KEY\" --field=\"USER_KEY\" --field=\" \":LBL --field=\"User-Agent de Wget\" \"$ygg_login\" \"$ygg_password\" \"$forum_login\" \"$forum_password\" \"\" \"$push_system_status\" \"$token_app\" \"$destinataire_1\" \"\" \"$wget_user_agent\" --button=gtk-ok:0 2>/dev/null >~/.config/argos/.yggtorrent-account"`
   echo " YGGTORRENT | image='$YGGTORRENT_BAD_ICON' imageWidth=25"
   echo "---"
   echo "Vous devez éditer les paramètres"
