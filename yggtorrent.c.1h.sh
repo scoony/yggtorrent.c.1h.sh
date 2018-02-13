@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.16"
+version="0.0.0.17"
 
 #### Vérification des dépendances
 if [[ ! -f "/bin/yad" ]] && [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
@@ -270,6 +270,7 @@ forum_auth_key=`cat $HOME/.config/argos/yggtorrent/forum_page_key.html | grep "a
 wget -q --save-cookies $HOME/.config/argos/yggtorrent/forum_cookies.txt --keep-session-cookies --post-data="auth_key=$forum_auth_key&referer=http%3A%2F%2Fforum.yggtorrent.com%2Findex.php&ips_username=$forum_login&ips_password=$forum_password&rememberMe=1" "$forum_login_page"
 wget -q --load-cookies=$HOME/.config/argos/yggtorrent/forum_cookies.txt "$forum_url" -O $HOME/.config/argos/yggtorrent/forum_page.html
 get_message_amount=`cat $HOME/.config/argos/yggtorrent/forum_page.html | grep "getInboxList" | sed '/grep/d' | grep -Po "(?<=ipsHasNotifications'>)[^<]*"`
+check_forum_connection=`cat $HOME/.config/argos/yggtorrent/forum_page.html | grep "Inscrivez-vous" | sed '/grep/d'`
 if [[ "$get_message_amount" == "" ]]; then
   get_message_amount="0"
 fi
@@ -297,7 +298,11 @@ echo "---"
 printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "URL actuelle" "$website_url" "$URL_ICON"
 printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Status de l'IP" "$ip_status" "$ip_status_icon"
 if [[ "$forum_login" != "" ]] && [[ "$forum_password" != "" ]]; then
-  printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Messagerie Forum" "$get_message_amount message(s) non-lu(s)" "$MESSAGE_ICON"
+  if [[ "$check_forum_connection" != "" ]]; then
+    printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Messagerie Forum" "identifiants invalides" "$MESSAGE_ICON"
+  else
+    printf "%-2s \e[1m%-20s\e[0m : %s | image='%s' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false \n" "" "Messagerie Forum" "$get_message_amount message(s) non-lu(s)" "$MESSAGE_ICON"
+  fi
 fi
 echo "---"
 printf "%-2s %s | image='$SETTINGS_ICON' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false bash='$account_infos' terminal=false \n" "" "Paramètres de l'extension"
