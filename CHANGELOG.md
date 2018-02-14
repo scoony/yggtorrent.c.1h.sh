@@ -1,3 +1,7 @@
+**Version: 0.0.0.20**
+- Changement de l'icone principale si il y a des messages sur le forum (icone mauve)
+- ... 
+
 **Version: 0.0.0.19**
 - Petit fix pour le popup si aucune configuration
 - Affichage en cas de soucis d'identifiants pour le forum 
