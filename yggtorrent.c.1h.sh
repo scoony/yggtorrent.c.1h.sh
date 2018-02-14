@@ -114,6 +114,7 @@ if [[ ! -f "$icons_cache/updater.png" ]] ; then curl -o "$icons_cache/updater.pn
 if [[ ! -f "$icons_cache/yggtorrent.png" ]] ; then curl -o "$icons_cache/yggtorrent.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent.png" ; fi
 if [[ ! -f "$icons_cache/yggtorrent-bad.png" ]] ; then curl -o "$icons_cache/yggtorrent-bad.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent-bad.png" ; fi
 if [[ ! -f "$icons_cache/yggtorrent-big.png" ]] ; then curl -o "$icons_cache/yggtorrent-big.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent-big.png" ; fi
+if [[ ! -f "$icons_cache/yggtorrent-message.png" ]] ; then curl -o "$icons_cache/yggtorrent-message.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/yggtorrent-message.png" ; fi
 if [[ ! -f "$icons_cache/settings.png" ]] ; then curl -o "$icons_cache/settings.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/settings.png" ; fi
 if [[ ! -f "$icons_cache/ratio.png" ]] ; then curl -o "$icons_cache/ratio.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/ratio.png" ; fi
 if [[ ! -f "$icons_cache/upload.png" ]] ; then curl -o "$icons_cache/upload.png" "https://raw.githubusercontent.com/scoony/yggtorrent.c.1h.sh/master/.cache-icons/upload.png" ; fi
@@ -127,6 +128,7 @@ if [[ ! -f "$icons_cache/message.png" ]] ; then curl -o "$icons_cache/message.pn
 #### Mise en variable des icones
 YGGTORRENT_ICON=$(curl -s "file://$icons_cache/yggtorrent.png" | base64 -w 0)
 YGGTORRENT_BAD_ICON=$(curl -s "file://$icons_cache/yggtorrent-bad.png" | base64 -w 0)
+YGGTORRENT_MESSAGE_ICON=$(curl -s "file://$icons_cache/yggtorrent-message.png" | base64 -w 0)
 SETTINGS_ICON=$(curl -s "file://$icons_cache/settings.png" | base64 -w 0)
 RATIO_ICON=$(curl -s "file://$icons_cache/ratio.png" | base64 -w 0)
 UPLOAD_ICON=$(curl -s "file://$icons_cache/upload.png" | base64 -w 0)
@@ -277,6 +279,8 @@ get_message_amount=`cat $HOME/.config/argos/yggtorrent/forum_page.html | grep "g
 check_forum_connection=`cat $HOME/.config/argos/yggtorrent/forum_page.html | grep "Inscrivez-vous" | sed '/grep/d'`
 if [[ "$get_message_amount" == "" ]]; then
   get_message_amount="0"
+else
+  YGGTORRENT_ICON=$YGGTORRENT_MESSAGE_ICON
 fi
 
 #### Préparation des paramètres
