@@ -36,46 +36,46 @@ pastebin_version=`wget -O- -q "$script_pastebin" | grep "^version=" | sed '/grep
 
 #### Comparaison des version et mise à jour si nécessaire
 vercomp () {
-    if [[ $1 == $2 ]]
-    then
-        return 0
-    fi
-    local IFS=.
-    local i ver1=($1) ver2=($2)
-    for ((i=${#ver1[@]}; i<${#ver2[@]}; i++))
-    do
-        ver1[i]=0
-    done
-    for ((i=0; i<${#ver1[@]}; i++))
-    do
-        if [[ -z ${ver2[i]} ]]
-        then
-            ver2[i]=0
-        fi
-        if ((10#${ver1[i]} > 10#${ver2[i]}))
-        then
-            return 1
-        fi
-        if ((10#${ver1[i]} < 10#${ver2[i]}))
-        then
-            return 2
-        fi
-    done
+  if [[ $1 == $2 ]]
+  then
     return 0
+  fi
+  local IFS=.
+  local i ver1=($1) ver2=($2)
+  for ((i=${#ver1[@]}; i<${#ver2[@]}; i++))
+  do
+    ver1[i]=0
+  done
+  for ((i=0; i<${#ver1[@]}; i++))
+  do
+    if [[ -z ${ver2[i]} ]]
+    then
+      ver2[i]=0
+    fi
+    if ((10#${ver1[i]} > 10#${ver2[i]}))
+    then
+      return 1
+    fi
+    if ((10#${ver1[i]} < 10#${ver2[i]}))
+    then
+      return 2
+    fi
+  done
+  return 0
 }
 testvercomp () {
-    vercomp $1 $2
-    case $? in
-        0) op='=';;
-        1) op='>';;
-        2) op='<';;
-    esac
-    if [[ $op != $3 ]]
-    then
-        echo "FAIL: Expected '$3', Actual '$op', Arg1 '$1', Arg2 '$2'"
-    else
-        echo "Pass: '$1 $op $2'"
-    fi
+  vercomp $1 $2
+  case $? in
+    0) op='=';;
+    1) op='>';;
+    2) op='<';;
+  esac
+  if [[ $op != $3 ]]
+  then
+    echo "FAIL: Expected '$3', Actual '$op', Arg1 '$1', Arg2 '$2'"
+  else
+    echo "Pass: '$1 $op $2'"
+  fi
 }
 compare=`testvercomp $local_version $pastebin_version '<' | grep Pass`
 if [[ "$compare" != "" ]] ; then
@@ -195,13 +195,13 @@ dehumanise() {
 
 #### Fonction: humanize
 humanise() {
-    b=${1:-0}; d=''; s=0; S=(Bytes {K,M,G,T,E,P,Y,Z}o)
-    while ((b > 1024)); do
-        d="$(printf ".%02d" $((b % 1000 * 100 / 1000)))"
-        b=$((b / 1000))
-        let s++
-    done
-    echo "$b$d ${S[$s]}"
+  b=${1:-0}; d=''; s=0; S=(Bytes {K,M,G,T,E,P,Y,Z}o)
+  while ((b > 1024)); do
+    d="$(printf ".%02d" $((b % 1000 * 100 / 1000)))"
+    b=$((b / 1000))
+    let s++
+  done
+  echo "$b$d ${S[$s]}"
 }
 
 #### Déclaration du système de méssages PUSH
