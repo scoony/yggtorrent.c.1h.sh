@@ -1,6 +1,6 @@
 **Version: 0.0.0.21**
-- adaptation au nouveau site: identification ok
-- adaptation au nouveau site: récupération ratio, download et upload ok
+- adaptation au nouveau site: identification ... ok
+- adaptation au nouveau site: récupération ratio, download et upload ... ok
 
 **Version: 0.0.0.20**
 - Changement de l'icone principale si il y a des messages sur le forum (icone mauve)
