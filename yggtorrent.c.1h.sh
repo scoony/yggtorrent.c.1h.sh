@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-## test de l'éditeur android
 
 version="0.0.0.20"
 
