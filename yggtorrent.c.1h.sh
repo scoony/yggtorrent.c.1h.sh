@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.20"
+version="0.0.0.21"
 
 #### Vérification des dépendances
 if [[ ! -f "/bin/yad" ]] && [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
@@ -142,8 +142,8 @@ MESSAGE_ICON=$(curl -s "file://$icons_cache/message.png" | base64 -w 0)
 #### Récupération des informations de YGG
 ygg_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $1}' FS="§"`
 ygg_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $2}' FS="§"`
-website_main_url="https://yggtorrent.com"
-forum_url="https://forum.yggtorrent.com"
+website_main_url="https://yggtorrent.is"
+forum_url="https://forum.yggtorrent.is"
 wget_user_agent=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $10}' FS="§"`
 if [[ "$wget_user_agent" != "" ]]; then
   webbrowser_agent=`echo "--user-agent=\""$wget_user_agent"\" "`
@@ -154,9 +154,14 @@ if [[ ! -f "$HOME/.config/argos/yggtorrent/.website_url.conf" ]]; then
   echo $website_main_url > $HOME/.config/argos/yggtorrent/.website_url.conf
 fi
 website_url=`cat $HOME/.config/argos/yggtorrent/.website_url.conf`
-current_url=`wget -q -O- "$website_url" "$webbrowser_agent"| grep favicon | sed 's/.*href="//' | sed -n '1p' | sed 's/\/static.*//'`
+##current_url=`wget -q --timeout=2 --waitretry=0 --tries=2 -O- "$website_url" "$webbrowser_agent"| grep "logotype" | sed '/mobile/d' | grep -Po '(?<=href=")[^"]*' | sed 's/\/$//'`
+current_url=`wget -q $(webbrowser_agent) --timeout=2 --waitretry=0 --tries=2 -O- "$website_url" | grep "logotype" | sed '/mobile/d' | grep -Po '(?<=href=")[^"]*' | sed 's/\/$//'`
 if [[ "$current_url" == "" ]]; then
   echo " Site Inaccessible | image='$YGGTORRENT_BAD_ICON' imageWidth=25"
+  echo "---"
+  echo "Le site n'est pas en ligne."
+  echo "DEBUG: WEBSITE_URL=\"$website_url\""
+  echo "DEBUG: CURRENT_URL=\"$current_url\""
   exit 1
 fi
 if [[ "$website_url" != "$current_url" ]]; then
@@ -171,12 +176,15 @@ website_url_twitter=`wget -O- -q https://twitter.com/yggtorrent_com | grep "Prof
 website_response_time=`curl --max-time 5 -s -w %{time_total}\\n -o /dev/null $website_url | sed 's/,.*//'`
 if [ "$website_response_time" -ge "5" ]; then
   echo " Site Inaccessible | image='$YGGTORRENT_BAD_ICON' imageWidth=25"
+  echo "---"
+  echo "Le site ne répond pas comme le devrait."
+  echo "Son temps de réponse dépasse les 5 secondes."
   exit 1
 fi
 
 #### Génération du cookie
 website_login_page=`echo $website_url"/user/login"`
-wget -q --save-cookies $HOME/.config/argos/yggtorrent/cookies.txt --keep-session-cookies --post-data="id=$ygg_login&pass=$ygg_password" "$website_login_page" "$webbrowser_agent"
+wget -q $(webbrowser_agent) --timeout=2 --waitretry=0 --tries=2 --save-cookies $HOME/.config/argos/yggtorrent/cookies.txt --keep-session-cookies --post-data="id=$ygg_login&pass=$ygg_password" "$website_login_page"
 
 #### Fonction: dehumanize
 dehumanise() {
@@ -233,11 +241,11 @@ push-message() {
 }
 
 #### Récupération des détails du compte
-wget -q --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url" -O $HOME/.config/argos/yggtorrent/page.html "$webbrowser_agent"
-mon_ratio=`cat $HOME/.config/argos/yggtorrent/page.html | grep Ratio | sed 's/.*Ratio \: //' | sed 's/<\/a>.*//'`
+wget -q $(webbrowser_agent) --timeout=2 --waitretry=0 --tries=2 --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url" -O $HOME/.config/argos/yggtorrent/page.html 
+mon_ratio=`cat $HOME/.config/argos/yggtorrent/page.html | grep 'class="ico_upload"' | grep -Po '(?<=\(Ratio : )[^\)]*'`
 if [[ "$mon_ratio" != "" ]]; then
-  mon_upload=`cat $HOME/.config/argos/yggtorrent/page.html | grep fa-arrow-up | sed 's/.*;">//' | sed 's/<\/span>.*//' | sed 's/ //g'`
-  mon_download=`cat $HOME/.config/argos/yggtorrent/page.html | grep fa-arrow-down | sed 's/.*;">//' | sed 's/<\/span>.*//' | sed 's/ //g'`
+  mon_upload=`cat $HOME/.config/argos/yggtorrent/page.html | grep 'class="ico_upload"' | grep -Po '(?<=ico_upload"></span>)[^<]*' | sed 's/ //g'`
+  mon_download=`cat $HOME/.config/argos/yggtorrent/page.html | grep 'class="ico_upload"' | grep -Po '(?<=ico_download"></span>)[^<]*' | sed 's/ //g'`
   mon_upload_detail=`dehumanise $mon_upload`
   mon_download_detail=`dehumanise $mon_download`
   mon_credit=$(($mon_upload_detail-$mon_download_detail))
@@ -256,8 +264,8 @@ if [[ "$mon_ratio" == "" ]]; then
 fi
 
 #### Récupération de l'avatar du membre
-wget -q --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url/user/account" -O $HOME/.config/argos/yggtorrent/page_account.html "$webbrowser_agent"
-avatar_url=`cat $HOME/.config/argos/yggtorrent/page_account.html | grep "/files/avatars/" | grep -oP 'http.?://\S+' | sed 's/"//'`
+wget -q $(webbrowser_agent) --timeout=2 --waitretry=0 --tries=2 --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url/user/account" -O $HOME/.config/argos/yggtorrent/page_account.html 
+avatar_url=`cat $HOME/.config/argos/yggtorrent/page_account.html | grep "/files/avatars/" | grep -oP 'http.?://\S+' | sed '/\/files\/avatars\//!d' | sed -n '1p' | sed 's/">.*//'`
 IMAGE=$(curl -s "$avatar_url" | base64 -w 0)
 
 #### Vérification que notre IP est masquée pour ce site
@@ -275,16 +283,18 @@ fi
 forum_login_page=`echo $forum_url"/index.php?app=core&module=global&section=login&do=process"`
 forum_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $3}' FS="§"`
 forum_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $4}' FS="§"`
-wget -q "$forum_url" -O "$HOME/.config/argos/yggtorrent/forum_page_key.html" "$webbrowser_agent"
+if [[ "$forum_login" != "" ]] || [[ "$forum_password" != "" ]]; then
+  wget -q "$forum_url" -O "$HOME/.config/argos/yggtorrent/forum_page_key.html" --user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"
 forum_auth_key=`cat $HOME/.config/argos/yggtorrent/forum_page_key.html | grep "auth_key" | sed '/grep/d' | sed -n '1p' | grep -Po "(?<=value=')[^']*"`
-wget -q --save-cookies $HOME/.config/argos/yggtorrent/forum_cookies.txt --keep-session-cookies --post-data="auth_key=$forum_auth_key&referer=http%3A%2F%2Fforum.yggtorrent.com%2Findex.php&ips_username=$forum_login&ips_password=$forum_password&rememberMe=1" "$forum_login_page" "$webbrowser_agent"
-wget -q --load-cookies=$HOME/.config/argos/yggtorrent/forum_cookies.txt "$forum_url" -O $HOME/.config/argos/yggtorrent/forum_page.html "$webbrowser_agent"
-get_message_amount=`cat $HOME/.config/argos/yggtorrent/forum_page.html | grep "getInboxList" | sed '/grep/d' | grep -Po "(?<=ipsHasNotifications'>)[^<]*"`
-check_forum_connection=`cat $HOME/.config/argos/yggtorrent/forum_page.html | grep "Inscrivez-vous" | sed '/grep/d'`
-if [[ "$get_message_amount" == "" ]]; then
-  get_message_amount="0"
-else
-  YGGTORRENT_ICON=$YGGTORRENT_MESSAGE_ICON
+  wget -q --save-cookies $HOME/.config/argos/yggtorrent/forum_cookies.txt --keep-session-cookies --post-data="auth_key=$forum_auth_key&referer=http%3A%2F%2Fforum.yggtorrent.com%2Findex.php&ips_username=$forum_login&ips_password=$forum_password&rememberMe=1" "$forum_login_page" --user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"
+  wget -q --load-cookies=$HOME/.config/argos/yggtorrent/forum_cookies.txt "$forum_url" -O $HOME/.config/argos/yggtorrent/forum_page.html --user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"
+  get_message_amount=`cat $HOME/.config/argos/yggtorrent/forum_page.html | grep "getInboxList" | sed '/grep/d' | grep -Po "(?<=ipsHasNotifications'>)[^<]*"`
+  check_forum_connection=`cat $HOME/.config/argos/yggtorrent/forum_page.html | grep "Inscrivez-vous" | sed '/grep/d'`
+  if [[ "$get_message_amount" == "" ]]; then
+    get_message_amount="0"
+  else
+    YGGTORRENT_ICON=$YGGTORRENT_MESSAGE_ICON
+  fi
 fi
 
 #### Préparation des paramètres
