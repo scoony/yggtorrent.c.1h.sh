@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.21"
+version="0.0.0.22"
 
 #### Vérification des dépendances
 if [[ ! -f "/bin/yad" ]] && [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
@@ -242,7 +242,7 @@ push-message() {
 
 #### Récupération des détails du compte
 wget -q $(webbrowser_agent) --timeout=2 --waitretry=0 --tries=2 --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url" -O $HOME/.config/argos/yggtorrent/page.html 
-mon_ratio=`cat $HOME/.config/argos/yggtorrent/page.html | grep 'class="ico_upload"' | grep -Po '(?<=\(Ratio : )[^\)]*'`
+mon_ratio=`cat $HOME/.config/argos/yggtorrent/page.html | grep 'Ratio :' | grep -Po '(?<=Ratio : )[^<]*'`
 if [[ "$mon_ratio" != "" ]]; then
   mon_upload=`cat $HOME/.config/argos/yggtorrent/page.html | grep 'class="ico_upload"' | grep -Po '(?<=ico_upload"></span>)[^<]*' | sed 's/ //g'`
   mon_download=`cat $HOME/.config/argos/yggtorrent/page.html | grep 'class="ico_upload"' | grep -Po '(?<=ico_download"></span>)[^<]*' | sed 's/ //g'`
