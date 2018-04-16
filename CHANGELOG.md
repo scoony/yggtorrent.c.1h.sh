@@ -1,6 +1,6 @@
 **Version: 0.0.0.22**
 - Ajout de la date/heure de la dernière mise à jour
-- ... travail en cours
+- Adaptation à une nouvelle présentation du site (ratio)
 
 **Version: 0.0.0.21**
 - Adaptation au nouveau site: identification ... ok
