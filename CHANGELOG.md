@@ -1,3 +1,7 @@
+**Version: 0.0.0.23**
+- L'utilisation de $(variable) a changée, remplacement par ${variable}
+- Adaptation au site qui affiche désormais To à la place de TB
+
 **Version: 0.0.0.22**
 - Ajout de la date/heure de la dernière mise à jour
 - Adaptation à une nouvelle présentation du site (ratio)
