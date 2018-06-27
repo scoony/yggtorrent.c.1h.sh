@@ -178,7 +178,7 @@ website_response_time=`curl --max-time 5 -s -w %{time_total}\\n -o /dev/null $we
 if [ "$website_response_time" -ge "5" ]; then
   echo " Site Inaccessible | image='$YGGTORRENT_BAD_ICON' imageWidth=25"
   echo "---"
-  echo "Le site ne répond pas comme le devrait."
+  echo "Le site ne répond pas comme il le devrait."
   echo "Son temps de réponse dépasse les 5 secondes."
   exit 1
 fi
