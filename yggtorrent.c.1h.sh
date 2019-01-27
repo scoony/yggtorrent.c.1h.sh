@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.23"
+version="0.0.0.24"
 
 #### Vérification des dépendances
 if [[ ! -f "/bin/yad" ]] && [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
@@ -156,7 +156,7 @@ if [[ ! -f "$HOME/.config/argos/yggtorrent/.website_url.conf" ]]; then
 fi
 website_url=`cat $HOME/.config/argos/yggtorrent/.website_url.conf`
 ##current_url=`wget -q --timeout=2 --waitretry=0 --tries=2 -O- "$website_url" "$webbrowser_agent"| grep "logotype" | sed '/mobile/d' | grep -Po '(?<=href=")[^"]*' | sed 's/\/$//'`
-current_url=`wget -q ${webbrowser_agent} --timeout=2 --waitretry=0 --tries=2 -O- "$website_url" | grep "logotype" | sed '/mobile/d' | grep -Po '(?<=href=")[^"]*' | sed 's/\/$//'`
+current_url=`wget -q ${webbrowser_agent} --timeout=2 --waitretry=0 --tries=2 -O- "$website_url" | grep "rootURL" | egrep -o 'https?://[^ ]+' | sed 's%/[^/]*$%%'`
 if [[ "$current_url" == "" ]]; then
   echo " Site Inaccessible | image='$YGGTORRENT_BAD_ICON' imageWidth=25"
   echo "---"
