@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.25"
+version="0.0.0.26"
 
 #### Vérification des dépendances
 if [[ ! -f "/bin/yad" ]] && [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
@@ -272,7 +272,7 @@ if [[ "$mon_ratio" == "" ]]; then
 fi
 
 #### Récupération de l'avatar du membre
-wget -q ${webbrowser_agent} --timeout=2 --waitretry=0 --tries=2 --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url/user/account" -O $HOME/.config/argos/yggtorrent/page_account.html 
+wget -q ${webbrowser_agent} --timeout=2 --waitretry=0 --tries=2 --load-cookies=$HOME/.config/argos/yggtorrent/cookies2.txt "$website_url/user/account" -O $HOME/.config/argos/yggtorrent/page_account.html 
 avatar_url=`cat $HOME/.config/argos/yggtorrent/page_account.html | grep "/files/avatars/" | grep -oP 'http.?://\S+' | sed '/\/files\/avatars\//!d' | sed -n '1p' | sed 's/">.*//'`
 IMAGE=$(curl -s "$avatar_url" | base64 -w 0)
 
