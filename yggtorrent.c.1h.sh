@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.24"
+version="0.0.0.25"
 
 #### Vérification des dépendances
 if [[ ! -f "/bin/yad" ]] && [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
@@ -143,7 +143,7 @@ MESSAGE_ICON=$(curl -s "file://$icons_cache/message.png" | base64 -w 0)
 ygg_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $1}' FS="§"`
 ygg_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $2}' FS="§"`
 ### SOUCIS ICI... DOIT PRENDRE LA VARIABLE
-website_main_url="https://ww1.yggtorrent.is"
+website_main_url="https://yggtorrent.gg"
 forum_url="https://forum.yggtorrent.is"
 wget_user_agent=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $10}' FS="§"`
 if [[ "$wget_user_agent" != "" ]]; then
@@ -186,6 +186,8 @@ fi
 #### Génération du cookie
 website_login_page=`echo $website_url"/user/login"`
 wget -q ${webbrowser_agent} --timeout=2 --waitretry=0 --tries=2 --save-cookies $HOME/.config/argos/yggtorrent/cookies.txt --keep-session-cookies --post-data="id=$ygg_login&pass=$ygg_password" "$website_login_page"
+website_login_page2=`echo $website_main_url"/user/login"`
+wget -q ${webbrowser_agent} --timeout=2 --waitretry=0 --tries=2 --save-cookies $HOME/.config/argos/yggtorrent/cookies2.txt --keep-session-cookies --post-data="id=$ygg_login&pass=$ygg_password" "$website_login_page2"
 
 #### Fonction: dehumanize
 dehumanise() {
@@ -244,6 +246,10 @@ push-message() {
 #### Récupération des détails du compte
 wget -q ${webbrowser_agent} --timeout=2 --waitretry=0 --tries=2 --load-cookies=$HOME/.config/argos/yggtorrent/cookies.txt "$website_url" -O $HOME/.config/argos/yggtorrent/page.html 
 mon_ratio=`cat $HOME/.config/argos/yggtorrent/page.html | grep 'Ratio :' | grep -Po '(?<=Ratio : )[^<]*'`
+if [[ "$mon_ratio" == "" ]]; then
+wget -q ${webbrowser_agent} --timeout=2 --waitretry=0 --tries=2 --load-cookies=$HOME/.config/argos/yggtorrent/cookies2.txt "$website_url" -O $HOME/.config/argos/yggtorrent/page.html 
+mon_ratio=`cat $HOME/.config/argos/yggtorrent/page.html | grep 'Ratio :' | grep -Po '(?<=Ratio : )[^<]*'`
+fi
 if [[ "$mon_ratio" != "" ]]; then
   mon_upload=`cat $HOME/.config/argos/yggtorrent/page.html | grep 'class="ico_upload"' | grep -Po '(?<=ico_upload"></span>)[^<]*' | sed 's/ //g'`
   mon_download=`cat $HOME/.config/argos/yggtorrent/page.html | grep 'class="ico_upload"' | grep -Po '(?<=ico_download"></span>)[^<]*' | sed 's/ //g'`
@@ -259,6 +265,7 @@ if [[ "$mon_ratio" == "" ]]; then
   echo " YGGTORRENT | image='$YGGTORRENT_BAD_ICON' imageWidth=25"
   echo "---"
   echo "Vous devez éditer les paramètres"
+  echo "URL: $website_url"
   echo "---"
   printf "%-2s %s | image='$SETTINGS_ICON' imageWidth=18 ansi=true font='Ubuntu Mono' trim=false bash='$account_infos' terminal=false \n" "" "Paramètres de l'extension"
   exit 1
