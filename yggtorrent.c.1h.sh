@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.26"
+version="0.0.0.27"
 
 #### Vérification des dépendances
 if [[ ! -f "/bin/yad" ]] && [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
@@ -143,7 +143,7 @@ MESSAGE_ICON=$(curl -s "file://$icons_cache/message.png" | base64 -w 0)
 ygg_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $1}' FS="§"`
 ygg_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $2}' FS="§"`
 ### SOUCIS ICI... DOIT PRENDRE LA VARIABLE
-website_main_url="https://yggtorrent.gg"
+website_main_url="https://www.yggtorrent.ch"
 forum_url="https://forum.yggtorrent.is"
 wget_user_agent=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $10}' FS="§"`
 if [[ "$wget_user_agent" != "" ]]; then
