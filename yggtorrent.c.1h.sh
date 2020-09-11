@@ -145,8 +145,8 @@ ygg_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $2}' FS=
 forum_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $3}' FS="§"`
 forum_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $4}' FS="§"`
 ### SOUCIS ICI... DOIT PRENDRE LA VARIABLE
-website_main_url="https://www3.yggtorrent.pe"
-forum_url="https://forum.yggtorrent.is"
+website_main_url="https://ww3.yggtorrent.si"
+forum_url="https://www2.yggtorrent.si/forum"
 wget_user_agent=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $10}' FS="§"`
 if [[ "$wget_user_agent" != "" ]]; then
   webbrowser_agent=`echo "--user-agent=\""$wget_user_agent"\" "`
