@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version="0.0.0.28"
+version="0.0.0.29"
 
 #### Vérification des dépendances
 if [[ ! -f "/bin/yad" ]] && [[ ! -f "/usr/bin/yad" ]]; then yad_missing="1"; fi
@@ -142,6 +142,8 @@ MESSAGE_ICON=$(curl -s "file://$icons_cache/message.png" | base64 -w 0)
 #### Récupération des informations de YGG
 ygg_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $1}' FS="§"`
 ygg_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $2}' FS="§"`
+forum_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $3}' FS="§"`
+forum_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $4}' FS="§"`
 ### SOUCIS ICI... DOIT PRENDRE LA VARIABLE
 website_main_url="https://www3.yggtorrent.pe"
 forum_url="https://forum.yggtorrent.is"
@@ -289,8 +291,6 @@ fi
 
 #### Récupération de données sur le forum
 forum_login_page=`echo $forum_url"/index.php?app=core&module=global&section=login&do=process"`
-forum_login=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $3}' FS="§"`
-forum_password=`cat $HOME/.config/argos/.yggtorrent-account | awk '{print $4}' FS="§"`
 if [[ "$forum_login" != "" ]] || [[ "$forum_password" != "" ]]; then
   wget -q "$forum_url" -O "$HOME/.config/argos/yggtorrent/forum_page_key.html" --user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"
 forum_auth_key=`cat $HOME/.config/argos/yggtorrent/forum_page_key.html | grep "auth_key" | sed '/grep/d' | sed -n '1p' | grep -Po "(?<=value=')[^']*"`
