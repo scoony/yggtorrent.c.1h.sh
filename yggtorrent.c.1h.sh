@@ -190,6 +190,7 @@ website_login_page=`echo $website_url"/user/login"`
 wget -q ${webbrowser_agent} --timeout=2 --waitretry=0 --tries=2 --save-cookies $HOME/.config/argos/yggtorrent/cookies.txt --keep-session-cookies --post-data="id=$ygg_login&pass=$ygg_password" "$website_login_page"
 website_login_page2=`echo $website_main_url"/user/login"`
 wget -q ${webbrowser_agent} --timeout=2 --waitretry=0 --tries=2 --save-cookies $HOME/.config/argos/yggtorrent/cookies2.txt --keep-session-cookies --post-data="id=$ygg_login&pass=$ygg_password" "$website_login_page2"
+rm login
 
 #### Fonction: dehumanize
 dehumanise() {
